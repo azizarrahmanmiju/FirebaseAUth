@@ -3,17 +3,14 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 //==============================
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-const specialCharRegex = /[!#$%^&*(),.?":{}|<>@]/g;
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+const specialCharRegex = /[!#$%^&*(),.?":{}|<>@]/;
 const upperCaseRegex = /[A-Z]/;
-
 const auth = getAuth();
-
 const RegisterForm = () => {
     const navigate = useNavigate();
 
     // const [validate, setvalidate] = useState(false);
-    toast("MAR miju")
 
     const register = e => {
         e.preventDefault();
@@ -36,16 +33,16 @@ const RegisterForm = () => {
 
         //==============
         createUserWithEmailAndPassword(auth, email, password)
-            .then((Userinit) => {
-                const user = Userinit.user;
-                console.log(user)
+            .then(() => {
+                sendEmailVerification(auth.currentUser)
+                    .then(() => {
+                        toast("Email verification sent to your email");
+                        alert("Please confirm Your Email Varification In Your Email");
+                    }).then();
                 navigate("/login");
             }).catch((error) => {
                 toast.error(error.message, "❌")
-            })
-
-
-
+            });
 
     }
 

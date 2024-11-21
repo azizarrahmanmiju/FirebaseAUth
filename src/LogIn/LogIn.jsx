@@ -17,6 +17,8 @@ const googleprovider = new GoogleAuthProvider(app);
 //==============================================
 
 const githubprovider = new GithubAuthProvider(app);
+
+
 //==============================================
 
 
@@ -24,39 +26,42 @@ const githubprovider = new GithubAuthProvider(app);
 const LogIn = () => {
     const [currentUser, setCurrentUser] = useState({});
     const [isloged, setisLoged] = useState(false);
+    const [verified, setverified] = useState(false);
+
+
+
+    // setverified(user.emailVerified);
+
 
 
     const GoogleLogIn = () => {
         signInWithPopup(auth, googleprovider)
-            .then(
-                (result) => {
-                    const user = result.user;
-                    setCurrentUser(user);
-                    setisLoged(true);
-                }
-
-            )
+            .then(async (result) => {
+                const user = result.user;
+                await user.reload(); // Reload user to get updated state
+                setCurrentUser(user);
+                setverified(user.emailVerified); // Check after reloading
+                setisLoged(true);
+            })
             .catch((error) => alert(error.message));
+    };
 
-    }
     const githubLogIn = () => {
-        console.log("githubLogin")
         signInWithPopup(auth, githubprovider)
-            .then(
-                (result) => {
-                    const user = result.user;
-                    setCurrentUser(user);
-                    setisLoged(true);
-                }
-
-            )
+            .then(async (result) => {
+                const user = result.user;
+                await user.reload(); // Reload user to get updated state
+                setCurrentUser(user);
+                setverified(true); // Check after reloading
+                setisLoged(true);
+            })
             .catch((error) => alert(error.message));
+    };
 
-    }
     const logedUser = () => {
         console.log("I love You")
         signOut(auth).then(() => {
-            setCurrentUser({})
+            setCurrentUser({});
             setisLoged(false);
             console.log("LogedOut");
         }).catch((error) => {
@@ -67,40 +72,49 @@ const LogIn = () => {
     }
     console.log(currentUser)//===============
 
-    const onsubmit = e => {
+    const onsubmit = async (e) => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+
         if (password.length < 6) {
-            toast.error('Invalidd Password',)
+            toast.error("Invalid Password");
             return;
         }
 
         signInWithEmailAndPassword(auth, email, password)
-            .then((user) => {
-                toast(user)
-                setisLoged(true)
-                console.log(user)
-                // setCurrentUser(user)
-            }).catch((error) => {
+            .then(async (result) => {
+                const user = result.user;
+                await user.reload(); // Reload user to update email verification status
+                setCurrentUser(user);
+                setisLoged(true);
+                setverified(user.emailVerified);
+            })
+            .catch((error) => {
                 setisLoged(false);
                 toast.error(error.message);
-            })
-        console.log(currentUser)
-    }
+            });
+    };
+
 
     return (
         <div className="login">
-
             {
                 isloged && <div className="usercard">
-                    <img
-                        className="h-20 w-20 rounded-full border-2"
-                        src={currentUser.photoURL || "https://i.ibb.co.com/fn3zcPN/pngwing-com-1.png"}
-                        alt={"img of " + (currentUser.displayName || "Anonymous")}
-                    ></img>
-                    <h1>Name: {currentUser.displayName}</h1>
-                    <h1>Email:{currentUser.email ?? "No Email"}</h1>
+
+                    {
+                        verified
+                            ? <div>
+                                <img
+                                    className="h-20 w-20 rounded-full border-2"
+                                    src={currentUser.photoURL || "https://i.ibb.co.com/fn3zcPN/pngwing-com-1.png"}
+                                    alt={"img of " + (currentUser.displayName || "Anonymous")}
+                                ></img>
+                                <h1>Name: {currentUser.displayName}</h1>
+                                <h1>Email:{currentUser.email ?? "No Email"}</h1>
+                            </div>
+                            : <div className="verify-email">Please Check Your Email and verified now{ }</div>
+                    }
 
                 </div>
             }
