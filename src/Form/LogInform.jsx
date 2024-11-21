@@ -37,7 +37,7 @@ const LogInform = ({ onsubmit }) => {
                             </label>
                             <input type="password" placeholder="password" name="password" className="input input-bordered" required />
                             <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                <NavLink to={"/forgetpassword"} className="label-text-alt link link-hover">Forgot password?</NavLink>
                             </label>
                         </div>
                         <div className="form-control mt-6">

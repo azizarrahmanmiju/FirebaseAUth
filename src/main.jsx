@@ -9,6 +9,7 @@ import {
 import Root from './Root/Root';
 import LogIn from './LogIn/LogIn';
 import RegisterForm from './Form/RegisterForm';
+import ForgetPassword from './ForgetPassword/ForgetPassword';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterForm></RegisterForm>,
-      },
+      }, {
+        path: "/forgetpassword",
+        element: <ForgetPassword></ForgetPassword>
+      }
     ]
   },
 ]);
