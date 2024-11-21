@@ -4,9 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 //==============================
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+const specialCharRegex = /[!#$%^&*(),.?":{}|<>@]/g;
+const upperCaseRegex = /[A-Z]/;
 
 const auth = getAuth();
-
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -18,10 +19,22 @@ const RegisterForm = () => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const terms = e.target.terms.checked;
         if (password.length < 6) {
             toast.error("Password must be at least 6 characters long");
             return;
+        } else if (!upperCaseRegex.test(password)) {
+            toast.error("Password must contain at least one uppercase letter");
+            return;
+        } else if (!specialCharRegex.test(password)) {
+            toast.error("Password must contain at least one special character");
+            return;
+        } else if (terms == false) {
+            toast.error("You must agree to the terms and conditions");
+            return;
         }
+
+        //==============
         createUserWithEmailAndPassword(auth, email, password)
             .then((Userinit) => {
                 const user = Userinit.user;
@@ -61,6 +74,9 @@ const RegisterForm = () => {
                                 <span className="label-text">Password</span>
                             </label>
                             <input type="text" placeholder="password" name="password" onChange={register} className="input input-bordered" required />
+                        </div>
+                        <div>
+                            <input type="checkbox" name="terms" /><span className="ml-3">Accept terms and conditions</span>
                         </div>
                         <div className="form-control mt-6">
                             <button type="submit" className="btn btn-primary">Register</button>

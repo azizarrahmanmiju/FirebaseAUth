@@ -1,8 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 //=============================================
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 
@@ -10,10 +8,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 
+// eslint-disable-next-line react/prop-types
 const LogInform = ({ onsubmit }) => {
-
-
-
 
 
     return (
@@ -50,7 +46,6 @@ const LogInform = ({ onsubmit }) => {
                     </form>
                 </div>
             </div>
-            <ToastContainer></ToastContainer>
         </div>
     );
 };
