@@ -1,0 +1,7 @@
+.root{
+    @apply text-gray-600 font-medium text-2xl gap-10 justify-center flex mt-10
+}
+
+.active{
+    @apply text-blue-500 
+}
