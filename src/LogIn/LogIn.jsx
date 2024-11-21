@@ -5,10 +5,14 @@ import Button from "../Utiles/Button.Jsx";
 import "./Login.css"
 //===============================================================
 
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+
+const auth = getAuth();
 
 const googleprovider = new GoogleAuthProvider(app);
-const auth = getAuth();
+//==============================================
+
+const githubprovider = new GithubAuthProvider(app);
 //==============================================
 
 
@@ -20,6 +24,20 @@ const LogIn = () => {
 
     const GoogleLogIn = () => {
         signInWithPopup(auth, googleprovider)
+            .then(
+                (result) => {
+                    const user = result.user;
+                    setCurrentUser(user);
+                    setisLoged(true);
+                }
+
+            )
+            .catch((error) => alert(error.message));
+
+    }
+    const githubLogIn = () => {
+        console.log("githubLogin")
+        signInWithPopup(auth, githubprovider)
             .then(
                 (result) => {
                     const user = result.user;
@@ -44,19 +62,28 @@ const LogIn = () => {
     }
     console.log(currentUser)
     return (
-        <div className="login">
-            <img src={currentUser.photoURL} alt={"img of " + currentUser.displayName}></img>
-            <h1>Name: {currentUser.displayName}</h1>
-            <h1>Email:{currentUser.email}</h1>
-            <h1>Tocken:{currentUser.accessToken}</h1>
+        <div className="login justify-center">
+
+            {
+                isloged && <>
+                    <img
+                        className="h-20 w-20 rounded-full border-2"
+                        src={currentUser.photoURL || "https://i.ibb.co.com/fn3zcPN/pngwing-com-1.png"}
+                        alt={"img of " + (currentUser.displayName || "Anonymous")}
+                    ></img>
+                    <h1>Name: {currentUser.displayName}</h1>
+                    <h1>Email:{currentUser.email ?? "No Email"}</h1>
+
+                </>
+            }
 
             {
                 isloged
                     ? <Button onClick={logedUser} >LogOut</Button>
-                    : <>
+                    : <div className="gap-3 grid">
                         <Button onClick={GoogleLogIn}  >Log In With Google</Button>
-                        <Button   >Log In With GitHub</Button>
-                    </>
+                        <Button onClick={githubLogIn} >Log In With GitHub</Button>
+                    </div>
 
             }
         </div>
