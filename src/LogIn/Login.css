@@ -1,3 +1,6 @@
 .login {
-    @apply text-2xl font-medium justify-center grid mt-10 text-center p-7
+    @apply text-2xl font-medium justify-center grid mt-10  gap-3
+}
+.usercard{
+    @apply p-7 border rounded-lg shadow-lg
 }

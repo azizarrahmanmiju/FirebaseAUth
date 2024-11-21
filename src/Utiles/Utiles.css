@@ -1,3 +1,7 @@
 .button{
-    @apply font-bold border-2 text-black border-black  px-4 py-2 bg-gray-300 rounded-md
+    @apply font-medium border-2 py-1 px-2 text-[20px] shadow-xl rounded-md
+}
+
+.loginform{
+    @apply  mx-auto p-4 bg-white rounded-md shadow-lg gap-2 grid 
 }

@@ -6,6 +6,7 @@ import "./Login.css"
 //===============================================================
 
 import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+import LogInform from "../Form/LogInform";
 
 const auth = getAuth();
 
@@ -62,10 +63,10 @@ const LogIn = () => {
     }
     console.log(currentUser)
     return (
-        <div className="login justify-center">
+        <div className="login">
 
             {
-                isloged && <>
+                isloged && <div className="usercard">
                     <img
                         className="h-20 w-20 rounded-full border-2"
                         src={currentUser.photoURL || "https://i.ibb.co.com/fn3zcPN/pngwing-com-1.png"}
@@ -74,13 +75,14 @@ const LogIn = () => {
                     <h1>Name: {currentUser.displayName}</h1>
                     <h1>Email:{currentUser.email ?? "No Email"}</h1>
 
-                </>
+                </div>
             }
 
             {
                 isloged
                     ? <Button onClick={logedUser} >LogOut</Button>
                     : <div className="gap-3 grid">
+                        <LogInform></LogInform>
                         <Button onClick={GoogleLogIn}  >Log In With Google</Button>
                         <Button onClick={githubLogIn} >Log In With GitHub</Button>
                     </div>
