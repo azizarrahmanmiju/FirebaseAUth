@@ -3,9 +3,12 @@ import { useState } from "react";
 import app from "../Firebaseinit";
 import Button from "../Utiles/Button.Jsx";
 import "./Login.css"
+import { ToastContainer, toast } from 'react-toastify';
+
+
 //===============================================================
 
-import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import LogInform from "../Form/LogInform";
 
 const auth = getAuth();
@@ -54,14 +57,38 @@ const LogIn = () => {
         console.log("I love You")
         signOut(auth).then(() => {
             setCurrentUser({})
-            setisLoged(false)
+            setisLoged(false);
             console.log("LogedOut");
         }).catch((error) => {
+            setisLoged(true);
             console.log("Error", error);
 
         });
     }
-    console.log(currentUser)
+    console.log(currentUser)//===============
+
+    const onsubmit = e => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        if (password.length < 6) {
+            toast.error('Invalidd Password',)
+            return;
+        }
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+                toast(user)
+                setisLoged(true)
+                console.log(user)
+                // setCurrentUser(user)
+            }).catch((error) => {
+                setisLoged(false);
+                toast.error(error.message);
+            })
+        console.log(currentUser)
+    }
+
     return (
         <div className="login">
 
@@ -79,15 +106,16 @@ const LogIn = () => {
             }
 
             {
-                isloged
+                (isloged)
                     ? <Button onClick={logedUser} >LogOut</Button>
                     : <div className="gap-3 grid">
-                        <LogInform></LogInform>
+                        <LogInform onsubmit={onsubmit}></LogInform>
                         <Button onClick={GoogleLogIn}  >Log In With Google</Button>
                         <Button onClick={githubLogIn} >Log In With GitHub</Button>
                     </div>
 
             }
+            <ToastContainer></ToastContainer>
         </div>
     );
 };
