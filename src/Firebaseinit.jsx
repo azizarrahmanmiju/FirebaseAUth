@@ -5,15 +5,14 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBzvq6HVmZHErr-bWyxssA-6SOhRPCuhD4",
-    authDomain: "fir-auth-11210.firebaseapp.com",
-    projectId: "fir-auth-11210",
-    storageBucket: "fir-auth-11210.firebasestorage.app",
-    messagingSenderId: "440972466929",
-    appId: "1:440972466929:web:962e037a5b2a8ddf44a750"
+    apiKey: "AIzaSyC9xvEY1D_UUv7DmPE54dLPnByqHH2siUU",
+    authDomain: "fir-auth-3eddb.firebaseapp.com",
+    projectId: "fir-auth-3eddb",
+    storageBucket: "fir-auth-3eddb.firebasestorage.app",
+    messagingSenderId: "985588780452",
+    appId: "1:985588780452:web:6602349a91bcd904ca8531"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 export default app;
